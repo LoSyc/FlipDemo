@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Flipcopy</string>
+    <string name="but_list">通用ListView</string>
+    <string name="tv_title">这是标题</string>
+    <string name="tv_desc">这是内容</string>
+    <string name="tv_time">2015-05-05</string>
+    <string name="tv_phone">这是电话</string>
+</resources>

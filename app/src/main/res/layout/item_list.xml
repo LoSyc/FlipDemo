@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+
+    <TextView
+            android:id="@+id/id_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:textSize="16sp"
+            android:textColor="@color/deep_grey"
+            android:text="@string/tv_title" />
+
+    <TextView
+            android:id="@+id/id_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/id_title"
+            android:layout_marginTop="10dp"
+            android:textSize="12sp"
+            android:minLines="1"
+            android:maxLines="2"
+            android:textColor="@color/grey"
+            android:text="@string/tv_desc" />
+
+    <TextView
+            android:id="@+id/id_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/id_desc"
+            android:layout_marginTop="10dp"
+            android:textSize="12sp"
+            android:text="@string/tv_time"
+            android:textColor="@color/grey" />
+
+    <CheckBox
+            android:id="@+id/id_cb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="8dp"
+            android:layout_alignParentRight="true" />
+
+    <TextView
+            android:id="@+id/id_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/id_cb"
+            android:layout_marginTop="8dp"
+            android:layout_alignParentRight="true"
+            android:background="@color/tv_bg"
+            android:drawablePadding="5dp"
+            android:paddingBottom="3dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="3dp"
+            android:textColor="@color/white"
+            android:text="@string/tv_phone"
+            android:textSize="12sp" />
+
+</RelativeLayout>
