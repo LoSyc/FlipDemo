@@ -7,9 +7,52 @@
     <LinearLayout
             android:id="@+id/homePanel"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:background="@color/grey"
-            android:orientation="horizontal">
+            android:layout_height="50dp"
+            android:orientation="horizontal" >
+
+
+        <org.losyc.android.flipcopy.util.FontIconButton
+                android:id="@+id/topbar_home"
+                android:textColor="@color/grey"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="50dp"
+                android:textSize="24sp"
+                android:text="@string/ficon_home" />
+        <org.losyc.android.flipcopy.util.FontIconButton
+                android:id="@+id/topbar_having"
+                android:textColor="@color/grey"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="50dp"
+                android:textSize="24sp"
+                android:text="@string/ficon_having" />
+
+        <org.losyc.android.flipcopy.util.FontIconButton
+                android:id="@+id/topbar_search"
+                android:textColor="@color/grey"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="50dp"
+                android:textSize="24sp"
+                android:text="@string/ficon_search" />
+        <org.losyc.android.flipcopy.util.FontIconButton
+                android:id="@+id/topbar_warn"
+                android:textColor="@color/grey"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="50dp"
+                android:textSize="24sp"
+                android:text="@string/ficon_warn" />
+        <org.losyc.android.flipcopy.util.FontIconButton
+                android:id="@+id/topbar_person"
+                android:textColor="@color/grey"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="50dp"
+                android:textSize="24sp"
+                android:text="@string/ficon_person" />
+
 
     </LinearLayout>
 

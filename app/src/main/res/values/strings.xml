@@ -5,4 +5,12 @@
     <string name="tv_desc">这是内容</string>
     <string name="tv_time">2015-05-05</string>
     <string name="tv_phone">这是电话</string>
+    <string name="ficon_home">&#xf015;</string>
+    <string name="ficon_having">&#xf009;</string>
+    <string name="ficon_search">&#xf002;</string>
+    <string name="ficon_warn">&#xf0f3;</string>
+    <string name="ficon_person">&#xf007;</string>
+    <string name="ficon_alling">&#xf036;</string>
+    <string name="ficon_user">&#xf0c0;</string>
+    <string name="ficon_account">&#xf234;</string>
 </resources>

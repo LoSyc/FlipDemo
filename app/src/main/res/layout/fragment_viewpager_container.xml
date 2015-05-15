@@ -8,8 +8,32 @@
             android:id="@+id/havingPanel"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:background="@color/grey"
             android:orientation="horizontal">
+
+        <org.losyc.android.flipcopy.util.FontIconButton
+                android:id="@+id/topbar_alling"
+                android:textColor="@color/grey"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="45dp"
+                android:textSize="24sp"
+                android:text="@string/ficon_alling" />
+        <org.losyc.android.flipcopy.util.FontIconButton
+                android:id="@+id/topbar_user"
+                android:textColor="@color/grey"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="45dp"
+                android:textSize="24sp"
+                android:text="@string/ficon_user" />
+        <org.losyc.android.flipcopy.util.FontIconButton
+                android:id="@+id/topbar_account"
+                android:textColor="@color/grey"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="45dp"
+                android:textSize="24sp"
+                android:text="@string/ficon_account" />
 
     </LinearLayout>
 

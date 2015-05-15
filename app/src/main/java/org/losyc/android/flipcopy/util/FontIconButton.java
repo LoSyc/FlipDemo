@@ -7,13 +7,16 @@ import android.widget.Button;
 import org.losyc.android.flipcopy.R;
 
 /**
- * 字体图标类,引用于 http://zlong.org/articles/use-fonticon-in-android/
+ * 字体图标类,引用于 http://fortawesome.github.io/Font-Awesome/
  * 将 ttf文件(字体图标.ttf) 放入到Android的assets目录
- * 在 xml 中引用此类代替 Button 类即可
- * 字符串与图标的对应,请参照字体图标的下载页面
- * Created by Losyc on 2015/5/12.
- * Modified by LoSyc on 18:16
+ * 在 xml 中引用此自定义 View 代替 Button 类即可
+ * 字符串与图标的对应,请使用 FontLab Stduio 查看其 Unicode 码
+ * 在String 里引用其文本即可  ...>&#x(4位Unicode码);<...
+ * Created by LoSyc on 2015/5/12.
+ * Modified by LoSyc on 2015/5/15
  */
+
+
 public class FontIconButton extends Button {
 
     private static final String FONT_ICON_TTF = "frist_font_icon.ttf";
