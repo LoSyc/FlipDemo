@@ -44,14 +44,13 @@ public class HavingPagerFragment extends Fragment {
         mViewPager = (ViewPager) view.findViewById(R.id.havingViewPagerContainer);
         fm = getActivity().getSupportFragmentManager();
 
-        if(mListBeans.isEmpty()) {
-            AllingFragment allingFragment = AllingFragment.newInstance();
-            mListBeans.add(allingFragment);
-            UserFragment userFragment = UserFragment.newInstance();
-            mListBeans.add(userFragment);
-            AccountFragment accountFragment = AccountFragment.newInstance();
-            mListBeans.add(accountFragment);
-        }
+        AllingFragment allingFragment = AllingFragment.newInstance();
+        mListBeans.add(allingFragment);
+        UserFragment userFragment = UserFragment.newInstance();
+        mListBeans.add(userFragment);
+        AccountFragment accountFragment = AccountFragment.newInstance();
+        mListBeans.add(accountFragment);
+
         mViewPager.setOffscreenPageLimit(2);
         mViewPager.setAdapter(new FragmentPagerAdapter(fm) {
             @Override
@@ -72,10 +71,8 @@ public class HavingPagerFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         Log.i(TAG, "------------DestroyView");
-        fm.beginTransaction().detach(mListBeans.get(0))
-                .detach(mListBeans.get(1))
-                .detach(mListBeans.get(2)).commit();
     }
+
 
     @Override
     public void onAttach(Activity activity) {

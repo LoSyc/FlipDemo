@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import org.losyc.android.flipcopy.R;
+import org.losyc.android.flipcopy.ui.customview.TopBarView;
 import org.losyc.android.flipcopy.ui.having.fragment.HavingPagerFragment;
 import org.losyc.android.flipcopy.ui.home.fragment.HomeFragment;
 import org.losyc.android.flipcopy.ui.person.fragment.PersonFragment;
@@ -22,16 +23,20 @@ import java.util.List;
  */
 public class HomePagerActivity extends SinglePagerFragmentActivity<Fragment, ViewPager> {
     public final static String TAG = "HomePagerActivity";
+    private List<Fragment> mBeans = new ArrayList<Fragment>();
 
     @Override
     protected List<Fragment> initListBean() {
-        List<Fragment> Beans = new ArrayList<Fragment>();
-        Beans.add(HomeFragment.newInstance());
-        Beans.add(HavingPagerFragment.newInstance());
-        Beans.add(SearchFragment.newInstance());
-        Beans.add(WarnFragment.newInstance());
-        Beans.add(PersonFragment.newInstance());
-        return Beans;
+
+        TopBarView one = (TopBarView) findViewById(R.id.topbar_home);
+
+
+        mBeans.add(HomeFragment.newInstance());
+        mBeans.add(HavingPagerFragment.newInstance());
+        mBeans.add(SearchFragment.newInstance());
+        mBeans.add(WarnFragment.newInstance());
+        mBeans.add(PersonFragment.newInstance());
+        return mBeans;
     }
 
     @Override
@@ -46,7 +51,7 @@ public class HomePagerActivity extends SinglePagerFragmentActivity<Fragment, Vie
 
     @Override
     protected void BindAdapter(ViewPager viewPager, FragmentManager fm, final List<Fragment> Beans) {
-//        viewPager.setOffscreenPageLimit(4);
+        viewPager.setOffscreenPageLimit(4);
         viewPager.setAdapter(new FragmentPagerAdapter(fm) {
             @Override
             public int getCount() {
@@ -60,4 +65,5 @@ public class HomePagerActivity extends SinglePagerFragmentActivity<Fragment, Vie
             }
         });
     }
+
 }

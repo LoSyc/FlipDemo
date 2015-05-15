@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/fragmentContainer"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:losyc="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white" >
+
     <LinearLayout
             android:id="@+id/homePanel"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
 
-        <org.losyc.android.flipcopy.util.FontIconButton
+        <org.losyc.android.flipcopy.ui.customview.TopBarView
                 android:id="@+id/topbar_home"
-                android:textColor="@color/grey"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="50dp"
-                android:textSize="24sp"
-                android:text="@string/ficon_home" />
+                losyc:icon="@drawable/ic_menu_start_conversation"
+                losyc:color="@color/grey" />
         <org.losyc.android.flipcopy.util.FontIconButton
                 android:id="@+id/topbar_having"
                 android:textColor="@color/grey"
