@@ -4,5 +4,6 @@
     <color name="grey">#D8D8D8</color>
     <color name="tv_bg">#5cbe6c</color>
     <color name="white">#ffffff</color>
+    <color name="red">#ff0000</color>
 
 </resources>

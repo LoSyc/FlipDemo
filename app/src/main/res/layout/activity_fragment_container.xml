@@ -15,21 +15,20 @@
             android:orientation="horizontal">
 
 
-        <org.losyc.android.flipcopy.ui.customview.TopBarView
+        <org.losyc.android.flipcopy.ui.customview.TopTabView
                 android:id="@+id/topbar_home"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="50dp"
                 losyc:icon="@drawable/ic_menu_start_conversation"
-                losyc:color="@color/grey" />
-        <org.losyc.android.flipcopy.util.FontIconButton
+                losyc:color="@color/red" />
+        <org.losyc.android.flipcopy.ui.customview.TopTabView
                 android:id="@+id/topbar_having"
-                android:textColor="@color/grey"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="50dp"
-                android:textSize="24sp"
-                android:text="@string/ficon_having" />
+                losyc:icon="@drawable/ic_menu_myplaces"
+                losyc:color="@color/red" />
 
         <org.losyc.android.flipcopy.util.FontIconButton
                 android:id="@+id/topbar_search"
