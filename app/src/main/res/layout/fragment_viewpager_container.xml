@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:losyc="http://schemas.android.com/apk/res-auto"
               android:id="@+id/fragmentContainer"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
@@ -10,30 +11,33 @@
             android:layout_height="45dp"
             android:orientation="horizontal">
 
-        <org.losyc.android.flipcopy.util.FontIconButton
+        <org.losyc.android.flipcopy.util.TopTabView
                 android:id="@+id/topbar_alling"
                 android:textColor="@color/grey"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="45dp"
-                android:textSize="24sp"
-                android:text="@string/ficon_alling" />
-        <org.losyc.android.flipcopy.util.FontIconButton
+                losyc:fontIcon="@string/ficon_alling"
+                losyc:fontIconSize="26sp"
+                losyc:color="@color/red" />
+        <org.losyc.android.flipcopy.util.TopTabView
                 android:id="@+id/topbar_user"
                 android:textColor="@color/grey"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="45dp"
-                android:textSize="24sp"
-                android:text="@string/ficon_user" />
-        <org.losyc.android.flipcopy.util.FontIconButton
+                losyc:fontIcon="@string/ficon_user"
+                losyc:fontIconSize="26sp"
+                losyc:color="@color/red" />
+        <org.losyc.android.flipcopy.util.TopTabView
                 android:id="@+id/topbar_account"
                 android:textColor="@color/grey"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="45dp"
-                android:textSize="24sp"
-                android:text="@string/ficon_account" />
+                losyc:fontIcon="@string/ficon_account"
+                losyc:fontIconSize="26sp"
+                losyc:color="@color/red" />
 
     </LinearLayout>
 

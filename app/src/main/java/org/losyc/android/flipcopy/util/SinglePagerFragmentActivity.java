@@ -29,11 +29,17 @@ public abstract class SinglePagerFragmentActivity<Params, DefindViewPager extend
         mViewPager = (DefindViewPager) findViewById(getViewPagerResId());
 
         FragmentManager fm = getSupportFragmentManager();
+        initViewBean();
         mListBeans = initListBean();
 
         BindAdapter(mViewPager, fm, mListBeans);
 
     }
+
+    /**
+     * 初始化子类视图
+     */
+    protected abstract void initViewBean();
 
     /**
      * 获取子类中配置的布局 id ,实现灵活布局

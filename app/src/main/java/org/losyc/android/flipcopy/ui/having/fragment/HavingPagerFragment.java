@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import org.losyc.android.flipcopy.R;
+import org.losyc.android.flipcopy.util.TopTabView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +21,11 @@ import java.util.List;
  * Created by Losyc on 2015/5/13.
  * Modified by LoSyc on 15:19
  */
-public class HavingPagerFragment extends Fragment {
+public class HavingPagerFragment extends Fragment implements View.OnClickListener {
     public final static String CONTENT = "KEY";
     public final static String TAG = "HavingFragment";
     private final List<Fragment> mListBeans = new ArrayList<Fragment>();
+    private final List<TopTabView> mTopTabs = new ArrayList<TopTabView>();
     private ViewPager mViewPager;
     private FragmentManager fm;
 
@@ -45,11 +47,26 @@ public class HavingPagerFragment extends Fragment {
         fm = getActivity().getSupportFragmentManager();
 
         AllingFragment allingFragment = AllingFragment.newInstance();
-        mListBeans.add(allingFragment);
         UserFragment userFragment = UserFragment.newInstance();
-        mListBeans.add(userFragment);
         AccountFragment accountFragment = AccountFragment.newInstance();
+        mListBeans.add(allingFragment);
+        mListBeans.add(userFragment);
         mListBeans.add(accountFragment);
+
+
+        TopTabView allingTab = (TopTabView) view.findViewById(R.id.topbar_alling);
+        TopTabView userTab = (TopTabView) view.findViewById(R.id.topbar_user);
+        TopTabView accountTab = (TopTabView) view.findViewById(R.id.topbar_account);
+        mTopTabs.add(allingTab);
+        mTopTabs.add(userTab);
+        mTopTabs.add(accountTab);
+
+        for (TopTabView topTabView : mTopTabs) {
+            topTabView.setOnClickListener(this);
+        }
+
+        allingTab.setCustomAlpha(1.0F);
+
 
         mViewPager.setOffscreenPageLimit(2);
         mViewPager.setAdapter(new FragmentPagerAdapter(fm) {
@@ -64,6 +81,29 @@ public class HavingPagerFragment extends Fragment {
                 return mListBeans.size();
             }
         });
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if (positionOffset > 0) {
+                    TopTabView left = mTopTabs.get(position);
+                    TopTabView right = mTopTabs.get(position + 1);
+
+                    left.setCustomAlpha(1 - positionOffset);
+                    right.setCustomAlpha(positionOffset);
+                }
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
         return view;
     }
 
@@ -78,5 +118,34 @@ public class HavingPagerFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Log.i(TAG, "------------onAttach");
+    }
+
+    @Override
+    public void onClick(View v) {
+        onClickTab(v);
+    }
+
+    private void onClickTab(View v) {
+        resetOtherTabs();
+        switch (v.getId()) {
+            case R.id.topbar_alling:
+                mTopTabs.get(0).setCustomAlpha(1.0f);
+                mViewPager.setCurrentItem(0, false);
+                break;
+            case R.id.topbar_user:
+                mTopTabs.get(1).setCustomAlpha(1.0f);
+                mViewPager.setCurrentItem(1, false);
+                break;
+            case R.id.topbar_account:
+                mTopTabs.get(2).setCustomAlpha(1.0f);
+                mViewPager.setCurrentItem(2, false);
+                break;
+        }
+    }
+
+    private void resetOtherTabs() {
+        for (TopTabView topTabView : mTopTabs) {
+            topTabView.setCustomAlpha(0);
+        }
     }
 }

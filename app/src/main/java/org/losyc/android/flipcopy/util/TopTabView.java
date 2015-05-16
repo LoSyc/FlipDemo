@@ -1,11 +1,10 @@
-package org.losyc.android.flipcopy.ui.customview;
+package org.losyc.android.flipcopy.util;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
@@ -20,20 +19,26 @@ import android.view.View;
 import org.losyc.android.flipcopy.R;
 
 /**
+ * 自定义 View 类,可实现字体图标, 图标文本, 单图标, 单文本的渐变色
+ * 字体图标引用于 http://fortawesome.github.io/Font-Awesome/
+ * 将 ttf文件(字体图标.ttf) 放入到Android的assets目录
+ * 在 xml 中引用此自定义 View 代替 Button 类即可
+ * 字符串与图标的对应,请使用 FontLab Stduio 查看其 Unicode 码
+ * 在String 里引用其文本即可  ...>&#x(4位Unicode码);<...
  * Created by Losyc on 2015/5/15.
- * Modified by LoSyc on 12:33
+ * Modified by LoSyc on 2015/5/15
  */
 public class TopTabView extends View {
     private static final String FONT_ICON_TTF = "frist_font_icon.ttf";
     private static Typeface fontIconTypeface;
-    private static final int GREY = 0xFFF5F5F5;
+    private static final int GREY = 0xFFD8D8D8;
     private static final String INSTANCE_STATUS = "INSTANCE_STATUS";
     private static final String INSTANCE_ALPHA = "INSTANCE_ALPHA";
 
     private int mColor = GREY;
     private Bitmap mIconBitmap;
-    private String mFontIcon = new String();
-    private String mText = new String();
+    private String mFontIcon;
+    private String mText;
     private int mTextSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics());
     private int mFontIconSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 16, getResources().getDisplayMetrics());
 
@@ -43,11 +48,15 @@ public class TopTabView extends View {
     private Canvas mCanvas;
 
     private Rect mIconRect;
-    private Rect mTextBound = new Rect();
-    private Rect mFontIconBound = new Rect();
+    private Rect mTextBound;
+    private Rect mFontIconBound;
 
     private Paint mTextPaint;
     private Paint mFontIconPaint;
+
+    private boolean mIconBitmapIsEmpty = true;
+    private boolean mTextIsEmpty = true;
+    private boolean mFontIconIsEmpty = true;
 
     public TopTabView(Context context) {
         super(context);
@@ -58,8 +67,29 @@ public class TopTabView extends View {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.TopTabView);
 
         initAttribute(typedArray);
-        mTextPaint = initTextPaint(mTextPaint, mText, mTextSize, mTextBound);
-        mFontIconPaint = initTextPaint(mFontIconPaint, mFontIcon, mFontIconSize, mFontIconBound);
+        if (!mTextIsEmpty) {
+            mTextPaint = initTextPaint(mTextPaint, mText, mTextSize, mTextBound);
+        }
+        if (!mFontIconIsEmpty) {
+            mFontIconPaint = new Paint();
+            setTypeface(getFontIconTypeface(context, FONT_ICON_TTF));
+            setBackgroundResource(R.drawable.image_button_background);
+            mFontIconPaint.setTextSize(mFontIconSize);
+            mFontIconPaint.getTextBounds(mFontIcon, 0, mFontIcon.length(), mFontIconBound);
+        }
+    }
+
+    public static Typeface getFontIconTypeface(Context context, String typeface) {
+        if (fontIconTypeface == null) {
+            fontIconTypeface = Typeface.createFromAsset(context.getAssets(), typeface);
+        }
+        return fontIconTypeface;
+    }
+
+    public void setTypeface(Typeface tf) {
+        if (mFontIconPaint.getTypeface() != tf) {
+            mFontIconPaint.setTypeface(tf);
+        }
     }
 
     /**
@@ -73,12 +103,17 @@ public class TopTabView extends View {
                 case R.styleable.TopTabView_icon:
                     BitmapDrawable drawable = (BitmapDrawable) typedArray.getDrawable(attr);
                     mIconBitmap = drawable.getBitmap();
+                    mIconBitmapIsEmpty = false;
                     break;
                 case R.styleable.TopTabView_fontIcon:
                     mFontIcon = typedArray.getString(attr);
+                    mFontIconBound = new Rect();
+                    mFontIconIsEmpty = false;
                     break;
                 case R.styleable.TopTabView_text:
                     mText = typedArray.getString(attr);
+                    mTextBound = new Rect();
+                    mTextIsEmpty = false;
                     break;
                 case R.styleable.TopTabView_textSize:
                     mTextSize = (int) typedArray.getDimension(attr, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12,
@@ -105,8 +140,8 @@ public class TopTabView extends View {
      */
     private Paint initTextPaint(Paint textPaint, String text, int textSize, Rect textBound) {
         textPaint = new Paint();
-        textPaint.getTextBounds(text, 0, text.length(), textBound);
         textPaint.setTextSize(textSize);
+        textPaint.getTextBounds(text, 0, text.length(), textBound);
         return textPaint;
     }
 
@@ -118,11 +153,33 @@ public class TopTabView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-        int iconWidth = Math.min(getMeasuredWidth() - getPaddingLeft() - getPaddingRight(), getMeasuredHeight() - getPaddingTop() -
-                getPaddingBottom() - mTextBound.height());
-        Point start = new Point(getMeasuredWidth() / 2 - iconWidth / 2, (getMeasuredHeight() - mTextBound.height()) / 2 - iconWidth / 2);
-        mIconRect = new Rect(start.x, start.y, start.x + iconWidth, start.y + iconWidth);
+        int iconWidth;
+        int x, y;
+        if (!mIconBitmapIsEmpty || !mFontIconIsEmpty) {
+            if (!mIconBitmapIsEmpty) {
+                if (!mTextIsEmpty) {
+                    iconWidth = Math.min(getMeasuredWidth() - getPaddingLeft() - getPaddingRight(), getMeasuredHeight() - getPaddingTop() -
+                            getPaddingBottom() - mTextBound.height());
+                    x = getMeasuredWidth() / 2 - iconWidth / 2;
+                    y = getMeasuredHeight() / 2 - (iconWidth + mTextBound.height()) / 2;
+                } else {
+                    iconWidth = Math.min(getMeasuredWidth() - getPaddingLeft() - getPaddingRight(), getMeasuredHeight() - getPaddingTop() -
+                            getPaddingBottom());
+                    x = getMeasuredWidth() / 2 - iconWidth / 2;
+                    y = getMeasuredHeight() / 2 - iconWidth / 2;
+                }
+                mIconRect = new Rect(x, y, x + iconWidth, y + iconWidth);
+            } else {
+                if (!mTextIsEmpty) {
+                    x = getMeasuredWidth() / 2 - mFontIconBound.width() / 2;
+                    y = getMeasuredHeight() / 2 - (mFontIconBound.height() + mTextBound.height()) / 2;
+                } else {
+                    x = getMeasuredWidth() / 2 - mFontIconBound.width() / 2;
+                    y = getMeasuredHeight() / 2 - mFontIconBound.height() / 2;
+                }
+                mIconRect = new Rect(x, y, x + mFontIconBound.width(), y + mFontIconBound.height());
+            }
+        }
     }
 
     /**
@@ -131,57 +188,49 @@ public class TopTabView extends View {
      */
     @Override
     protected void onDraw(Canvas canvas) {
+        int alpha = (int) Math.ceil(mAlpha * 255);
 
+        if (!mIconBitmapIsEmpty) {
             canvas.drawBitmap(mIconBitmap, null, mIconRect, null);
-
-            int alpha = (int) Math.ceil(mAlpha * 255);
             setupTargetBitmap(alpha);
-
-            drawSouceText(canvas, alpha);
-            drawTargetText(canvas, alpha);
-
-            drawSouceFontIcon(canvas, alpha);
-            drawTargetFontIcon(canvas, alpha);
-
             canvas.drawBitmap(mBitmap, 0, 0, null);
-
+        }
+        if (!mFontIconIsEmpty) {
+            setTextColorAlgha(mFontIconPaint, GREY, 255 - alpha);
+            drawFontIcon(canvas);
+            setTextColorAlgha(mFontIconPaint, mColor, alpha);
+            drawFontIcon(canvas);
+        }
+        if (!mTextIsEmpty) {
+            setTextColorAlgha(mTextPaint, GREY, 255 - alpha);
+            drawText(canvas);
+            setTextColorAlgha(mTextPaint, mColor, alpha);
+            drawText(canvas);
+        }
     }
 
-    private void drawTargetFontIcon(Canvas canvas, int alpha) {
-        mFontIconPaint.setColor(mColor);
-        mFontIconPaint.setAlpha(alpha);
-        Point start = new Point((getMeasuredWidth() - mFontIconBound.width() / 2), mIconRect.bottom + mFontIconBound.height());
-        canvas.drawText(mFontIcon, start.x, start.y, mFontIconPaint);
+    private void setTextColorAlgha(Paint textPaint,int color, int alpha) {
+        textPaint.setColor(color);
+        textPaint.setAlpha(alpha);
     }
 
-    private void drawSouceFontIcon(Canvas canvas, int alpha) {
-        mFontIconPaint.setColor(GREY);
-        mFontIconPaint.setAlpha(255 - alpha);
-        Point start = new Point((getMeasuredWidth() - mFontIconBound.width() / 2), mIconRect.bottom + mFontIconBound.height());
-        canvas.drawText(mFontIcon, start.x, start.y, mFontIconPaint);
+    private void drawFontIcon(Canvas canvas) {
 
+        int x = mIconRect.left;
+        int y = mIconRect.bottom;
+        canvas.drawText(mFontIcon, x, y, mFontIconPaint);
     }
 
-    /**
-     * @param canvas
-     * @param alpha
-     */
-    private void drawTargetText(Canvas canvas, int alpha) {
-        mTextPaint.setColor(mColor);
-        mTextPaint.setAlpha(alpha);
-        Point start = new Point((getMeasuredWidth() - mTextBound.width() / 2), mIconRect.bottom + mTextBound.height());
-        canvas.drawText(mText, start.x, start.y, mTextPaint);
-    }
-
-    /**
-     * @param canvas
-     * @param alpha
-     */
-    private void drawSouceText(Canvas canvas, int alpha) {
-        mTextPaint.setColor(GREY);
-        mTextPaint.setAlpha(255 - alpha);
-        Point start = new Point((getMeasuredWidth() - mTextBound.width() / 2), mIconRect.bottom + mTextBound.height());
-        canvas.drawText(mText, start.x, start.y, mTextPaint);
+    private void drawText(Canvas canvas) {
+        int x, y;
+        if (!mIconBitmapIsEmpty || !mFontIconIsEmpty) {
+            x = getMeasuredWidth() / 2 - mTextBound.width() / 2;
+            y = mIconRect.bottom + mTextBound.height();
+        } else {
+            x = getMeasuredWidth() / 2 - mTextBound.width() / 2;
+            y = getMeasuredHeight() / 2 + mTextBound.height() / 2;
+        }
+        canvas.drawText(mText, x, y, mTextPaint);
     }
 
     /**

@@ -7,7 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import org.losyc.android.flipcopy.R;
-import org.losyc.android.flipcopy.ui.customview.TopTabView;
+import org.losyc.android.flipcopy.util.TopTabView;
 import org.losyc.android.flipcopy.ui.having.fragment.HavingPagerFragment;
 import org.losyc.android.flipcopy.ui.home.fragment.HomeFragment;
 import org.losyc.android.flipcopy.ui.person.fragment.PersonFragment;
@@ -29,19 +29,27 @@ public class HomePagerActivity extends SinglePagerFragmentActivity<Fragment, Vie
     private ViewPager mViewPager;
 
     @Override
+    protected void initViewBean() {
+        TopTabView homeTab = (TopTabView) findViewById(R.id.topbar_home);
+        TopTabView havingTab = (TopTabView) findViewById(R.id.topbar_having);
+        TopTabView searchTab = (TopTabView) findViewById(R.id.topbar_search);
+        TopTabView warnTab = (TopTabView) findViewById(R.id.topbar_warn);
+        TopTabView personTab = (TopTabView) findViewById(R.id.topbar_person);
+        mTopTabs.add(homeTab);
+        mTopTabs.add(havingTab);
+        mTopTabs.add(searchTab);
+        mTopTabs.add(warnTab);
+        mTopTabs.add(personTab);
+
+        for (TopTabView topTabView : mTopTabs) {
+            topTabView.setOnClickListener(this);
+        }
+
+        homeTab.setCustomAlpha(1.0F);
+    }
+
+    @Override
     protected List<Fragment> initListBean() {
-
-        TopTabView one = (TopTabView) findViewById(R.id.topbar_home);
-        TopTabView two = (TopTabView) findViewById(R.id.topbar_having);
-        mTopTabs.add(one);
-        mTopTabs.add(two);
-
-        one.setOnClickListener(this);
-        two.setOnClickListener(this);
-
-        one.setCustomAlpha(1.0F);
-
-
         mBeans.add(HomeFragment.newInstance());
         mBeans.add(HavingPagerFragment.newInstance());
         mBeans.add(SearchFragment.newInstance());
@@ -103,6 +111,10 @@ public class HomePagerActivity extends SinglePagerFragmentActivity<Fragment, Vie
 
     @Override
     public void onClick(View v) {
+        onClickTab(v);
+    }
+
+    private void onClickTab(View v) {
         resetOtherTabs();
         switch (v.getId()) {
             case R.id.topbar_home:
@@ -112,6 +124,18 @@ public class HomePagerActivity extends SinglePagerFragmentActivity<Fragment, Vie
             case R.id.topbar_having:
                 mTopTabs.get(1).setCustomAlpha(1.0f);
                 mViewPager.setCurrentItem(1, false);
+                break;
+            case R.id.topbar_search:
+                mTopTabs.get(2).setCustomAlpha(1.0f);
+                mViewPager.setCurrentItem(2, false);
+                break;
+            case R.id.topbar_warn:
+                mTopTabs.get(3).setCustomAlpha(1.0f);
+                mViewPager.setCurrentItem(3, false);
+                break;
+            case R.id.topbar_person:
+                mTopTabs.get(4).setCustomAlpha(1.0f);
+                mViewPager.setCurrentItem(4, false);
                 break;
         }
     }
