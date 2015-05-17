@@ -29,20 +29,32 @@ import org.losyc.android.flipcopy.R;
  * Modified by LoSyc on 2015/5/15
  */
 public class TopTabView extends View {
+    //设置 FontIcon 字体
     private static final String FONT_ICON_TTF = "frist_font_icon.ttf";
     private static Typeface fontIconTypeface;
-    private static final int GREY = 0xFFD8D8D8;
+
+    //用于Activity 销毁时保存点击的状态
     private static final String INSTANCE_STATUS = "INSTANCE_STATUS";
     private static final String INSTANCE_ALPHA = "INSTANCE_ALPHA";
 
+    //默认View颜色为灰色
+    private static final int GREY = 0xFFD8D8D8;
     private int mColor = GREY;
+
     private Bitmap mIconBitmap;
     private String mFontIcon;
     private String mText;
+
+    //初始化文本的默认大小
     private int mTextSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics());
+
+    //初始化字体图标的默认大小
     private int mFontIconSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 16, getResources().getDisplayMetrics());
 
+    //默认为全透明,即为默认颜色
     private float mAlpha = 0.0f;
+
+    //内存中绘图
     private Bitmap mBitmap;
     private Paint mPaint;
     private Canvas mCanvas;
@@ -79,6 +91,12 @@ public class TopTabView extends View {
         }
     }
 
+    /**
+     * 从 assets 文件夹中获取字体文件
+     * @param context
+     * @param typeface
+     * @return
+     */
     public static Typeface getFontIconTypeface(Context context, String typeface) {
         if (fontIconTypeface == null) {
             fontIconTypeface = Typeface.createFromAsset(context.getAssets(), typeface);
@@ -86,6 +104,10 @@ public class TopTabView extends View {
         return fontIconTypeface;
     }
 
+    /**
+     * 设置字体图标
+     * @param tf
+     */
     public void setTypeface(Typeface tf) {
         if (mFontIconPaint.getTypeface() != tf) {
             mFontIconPaint.setTypeface(tf);
@@ -132,7 +154,6 @@ public class TopTabView extends View {
 
     /**
      * 初始化 text 类 Paint,并设置 textBound
-     *
      * @param textPaint 文本画笔
      * @param text      文本内容
      * @param textSize  文本大小
